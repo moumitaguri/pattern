@@ -1,40 +1,8 @@
-const repeatCharacters = function(number,symbol){
-  let repeated = ""; 
-  for(let position=1; position<= number; position++){
-    repeated += symbol;
-  }
-  return repeated;
-}
+const { repeatCharacters, createLine, joinLines,
+  rightJustify,leftJustify,createLineGenerator,
+  filledLineGenerator,HollowLineGenerator
+} = require('./util.js');
 
-const createLine = function(width,leftChar,middleChar,rightChar){
-  let leftBorder = 1 % (width+1);
-  let rightBorder = 1 % (width);
-  let left = repeatCharacters(leftBorder,leftChar);
-  let middle = repeatCharacters(width - 2,middleChar);
-  let right = repeatCharacters(rightBorder,rightChar);
-  return left + middle + right ;
-}
-
-const createLineGenerator = function(leftChar,middleChar,rightChar){
-  return function(width){
-    return createLine(width,leftChar,middleChar,rightChar);
-  }
-}
-const filledLineGenerator = createLineGenerator("*","*","*");
-const HollowLineGenerator = createLineGenerator("*"," ","*");
-
-const joinLines = function(previousLine,lineToJoin,separator){
-  return previousLine  + separator + lineToJoin;
-}
-
-const rightJustify = function(text,width){
-  let numberOfspaces = width - text.length;
-  let spacesToAdd = repeatCharacters(numberOfspaces," ");
-  return spacesToAdd + text ;
-}
-const leftJustify = function(text,width){
-  return text;
-}
 
 const createTriangle = function(height,justifier){
   let trianglePattern = "";
