@@ -1,48 +1,78 @@
-let triangleType = process.argv[2];
-let height = +process.argv[3];
-
-const generateSymbols = function(number,symbol){
-  let row = ""; 
+const repeatCharacters = function(number,symbol){
+  let repeated = ""; 
   for(let position=1; position<= number; position++){
-    row += symbol;
+    repeated += symbol;
   }
-  return row;
+  return repeated;
 }
 
-const createLeftAlignedPattern = function(height){
+const createLine = function(width,leftChar,middleChar,rightChar){
+  let leftBorder = 1 % (width+1);
+  let rightBorder = 1 % (width);
+  let left = repeatCharacters(leftBorder,leftChar);
+  let middle = repeatCharacters(width - 2,middleChar);
+  let right = repeatCharacters(rightBorder,rightChar);
+  return left + middle + right ;
+}
+
+const createLineGenerator = function(leftChar,middleChar,rightChar){
+  return function(width){
+    return createLine(width,leftChar,middleChar,rightChar);
+  }
+}
+const filledLineGenerator = createLineGenerator("*","*","*");
+
+const joinLines = function(previousLine,lineToJoin,separator){
+  return previousLine  + separator + lineToJoin;
+}
+
+const rightJustify = function(text,width){
+  let numberOfspaces = width - text.length;
+  let spacesToAdd = repeatCharacters(numberOfspaces," ");
+  return spacesToAdd + text ;
+}
+const leftJustify = function(text,width){
+  return text;
+}
+
+const createTriangle = function(height,justifier){
   let trianglePattern = "";
-  let delimiter = "";
+  let separator = "";
   for(let lineNumber=1; lineNumber<=height; lineNumber++){
-    let pattern = generateSymbols(lineNumber,"*");
-    trianglePattern += delimiter+pattern;
-    delimiter = "\n";
+    let line = filledLineGenerator(lineNumber);
+    let justifiedLine = justifier(line,height);
+    trianglePattern = joinLines(trianglePattern,justifiedLine,separator);
+    separator = "\n";
   }
   return trianglePattern;
 }
 
-const createRightAlignedPattern = function(height){
-  let delimiter = "";
-  let trianglePattern = "";
-  for(lineNumber=1; lineNumber<=height; lineNumber++){
-    let pattern = generateSymbols(height-lineNumber," ");
-    trianglePattern += delimiter+pattern;
-    pattern = generateSymbols(lineNumber,"*");
-    trianglePattern += pattern;
-    delimiter = "\n";
-  }
-  return trianglePattern;
+
+const createLeftTriangle = function(height){
+  return createTriangle(height,leftJustify);
 }
 
-const selectTriangle = function(triangleType){
+const createRightTriangle = function(height){
+  return createTriangle(height,rightJustify);
+}
+
+const selectTriangle = function(triangleType,height){
   let requiredPattern;
   if(triangleType == "left"){
-    requiredPattern = createLeftAlignedPattern(height);
+    requiredPattern = createLeftTriangle(height);
   }
   if(triangleType == "right"){
-    requiredPattern = createRightAlignedPattern(height);
+    requiredPattern = createRightTriangle(height);
   }
   return requiredPattern;
 }
 
-let generatePattern = selectTriangle(triangleType);
-console.log(generatePattern);
+
+const main = function(){
+  let triangleType = process.argv[2];
+  let height = +process.argv[3];
+  let triangle = selectTriangle(triangleType,height);
+  console.log(triangle);
+}
+
+main();
