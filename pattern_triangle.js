@@ -57,14 +57,12 @@ const createRightTriangle = function(height){
 }
 
 const selectTriangle = function(triangleType,height){
-  let requiredPattern;
   if(triangleType == "left"){
-    requiredPattern = createLeftTriangle(height);
+    return createLeftTriangle(height);
   }
   if(triangleType == "right"){
-    requiredPattern = createRightTriangle(height);
+    return createRightTriangle(height);
   }
-  return requiredPattern;
 }
 
 

@@ -1,71 +1,72 @@
-let rectangleType = process.argv[2];
-let width = +process.argv[3];
-let height = +process.argv[4];
-
-const generateDashes = function(width){
-  let symbol = "";
-  for(let position=1; position<=width; position++){
-    symbol+= "-";
+const repeatCharacters = function(number,symbol){
+  let repeated = ""; 
+  for(let position=1; position<= number; position++){
+    repeated += symbol;
   }
-  return symbol;
+  return repeated;
 }
 
-const generateStars = function(width){
-  let symbol = "";
-  for(let position=1; position<=width; position++){
-    symbol+= "*";
-  }
-  return symbol;
+const createLine = function(width,leftChar,middleChar,rightChar){
+  let leftBorder = 1 % (width+1);
+  let rightBorder = 1 % (width);
+  let left = repeatCharacters(leftBorder,leftChar);
+  let middle = repeatCharacters(width - 2,middleChar);
+  let right = repeatCharacters(rightBorder,rightChar);
+  return left + middle + right ;
 }
 
-const generateSpaces = function(width){
-  let symbol = "*";
-  for(let position=1; position<=width-2; position++){
-      symbol+= " ";
-  }
-  symbol+= "*";
-  return symbol;
-}
-
-const createFilledRectangle = function(height,width){
-  for(let row=1; row<=height; row++){
-    let pattern = generateStars(width);
-    console.log(pattern);
+const createLineGenerator = function(leftChar,middleChar,rightChar){
+  return function(width){
+    return createLine(width,leftChar,middleChar,rightChar);
   }
 }
+const filledLineGenerator = createLineGenerator("*","*","*");
+const HollowLineGenerator = createLineGenerator("*"," ","*");
 
-const createEmptyRectangle = function(height,width){
-  for(let row=1; row<=height; row++){
-    let pattern = generateSpaces(width);
-    if(row == 1 || row == height){
-      pattern = generateStars(width);
-    }
-    console.log(pattern);
+const joinLines = function(previousLine,lineToJoin,separator){
+  return previousLine  + separator + lineToJoin;
+}
+
+
+const createRectangle = function(width,height,topLineGen,middleLineGen,bottomLineGen){
+  let separator = "\n";
+  let rectangle = topLineGen(width);
+  
+  for(let lineNumber = 0; lineNumber < height - 2; lineNumber++){
+    let middleLine = middleLineGen(width);
+    rectangle =  joinLines(rectangle,middleLine,separator);
+  }
+  if(height < 2){
+    return rectangle;
+  }
+  let bottomLine = bottomLineGen(width);
+  return joinLines(rectangle,bottomLine,separator);
+}
+
+const createFilledRectangle = function(width,height){
+  return createRectangle(width,height,filledLineGenerator,filledLineGenerator,filledLineGenerator);
+}
+
+const createHollowRectangle = function(width,height){
+  return createRectangle(width,height,filledLineGenerator,HollowLineGenerator,filledLineGenerator);
+}
+
+
+const selectRectangle = function(type,width,height){
+  if(type == "filled"){
+    return createFilledRectangle(width,height);
+  }
+  if(type == "empty"){
+    return createHollowRectangle(width,height);
   }
 }
 
-const createAlternatingRectangle = function(height,width){
-  for(let row=1; row<=height; row++){
-    let pattern = generateStars(width);
-    if(row % 2 == 1){
-      pattern = generateDashes(width);
-    }
-    console.log(pattern);
-  }
+const main = function(){
+  let type = process.argv[2];
+  let width = +process.argv[3];
+  let height = +process.argv[4];
+  let rectangle = selectRectangle(type,width,height); 
+  console.log(rectangle);
 }
 
-const selectRectangleType = function(rectangleType){
-  let printPattern;
-  if(rectangleType == "filled"){
-    printPattern = createFilledRectangle(height,width);
-  }
-  if(rectangleType == "empty"){
-    printPattern = createEmptyRectangle(height,width);
-  }
-  if(rectangleType == "alternating"){
-    printPattern = createAlternatingRectangle(height,width);
-  }
-  return printPattern;
-}
-
-let generatePattern = selectRectangleType(rectangleType);
+main();
