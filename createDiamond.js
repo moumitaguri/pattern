@@ -1,9 +1,9 @@
 const lib = require('./src/library.js');
+const utilLib = require('./src/util.js');
 
 const main = function(){
-  let diamondType = process.argv[2];
-  let height = process.argv[3];
-  let diamond = lib.findRequiredPattern(diamondType,height); 
+let diamondDetails = utilLib.fetchPatternDetails(process.argv); 
+  let diamond = lib.findRequiredPattern(diamondDetails.type,diamondDetails.height); 
   console.log(diamond);
 }
 

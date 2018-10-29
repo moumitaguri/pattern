@@ -1,3 +1,8 @@
+const fetchPatternDetails = function(details){
+  return { type : details[2], height : details[3], width : details[4] };
+}
+
+
 const repeatCharacters = function(number,symbol){
   let repeated = ""; 
   for(let position=1; position<= number; position++){
@@ -47,3 +52,4 @@ exports.leftJustify = leftJustify;
 exports.createLineGenerator = createLineGenerator;
 exports.filledLineGenerator = filledLineGenerator;
 exports.HollowLineGenerator = HollowLineGenerator;
+exports.fetchPatternDetails = fetchPatternDetails;

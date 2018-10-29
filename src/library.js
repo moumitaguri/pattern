@@ -61,7 +61,7 @@ const createHollowRectangle = function(width,height){
 }
 
 
-const selectRectangle = function(type,width,height){
+const selectRectangle = function(type,height,width){
   if(type == "filled"){
     return createFilledRectangle(width,height);
   }

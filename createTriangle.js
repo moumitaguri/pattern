@@ -1,9 +1,9 @@
 const lib = require('./src/library.js');
+const utilLib = require('./src/util.js');
 
 const main = function(){
-  let triangleType = process.argv[2];
-  let height = +process.argv[3];
-  let triangle = lib.selectTriangle(triangleType,height);
+  let triangleDetails = utilLib.fetchPatternDetails(process.argv); 
+  let triangle = lib.selectTriangle(triangleDetails.type, triangleDetails.height);
   console.log(triangle);
 }
 

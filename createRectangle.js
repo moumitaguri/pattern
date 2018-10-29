@@ -1,11 +1,9 @@
 const lib = require('./src/library.js');
-
+const utilLib = require('./src/util.js');
 
 const main = function(){
-  let type = process.argv[2];
-  let width = +process.argv[3];
-  let height = +process.argv[4];
-  let rectangle = lib.selectRectangle(type,width,height);
+  let rectangleDetails = utilLib.fetchPatternDetails(process.argv); 
+  let rectangle = lib.selectRectangle(rectangleDetails.type,rectangleDetails.height,rectangleDetails.width);
   console.log(rectangle);
 }
 
