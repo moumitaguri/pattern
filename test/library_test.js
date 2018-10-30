@@ -1,6 +1,6 @@
 const assert = require('assert');
 const lib = require('../src/library.js');
-let {createLeftTriangle, createRightTriangle, createFilledRectangle, createHollowRectangle, createFilledDiamond, createHollowDiamond, createAngledDiamond } = lib;
+let {createLeftTriangle, createRightTriangle, createFilledRectangle, createHollowRectangle, createFilledDiamond, createHollowDiamond, createAngled } = lib;
 assert.deepEqual(createLeftTriangle(1),'*');
 assert.deepEqual(createLeftTriangle(2),'*\n**');
 assert.deepEqual(createLeftTriangle(4),'*\n**\n***\n****');
@@ -26,12 +26,8 @@ assert.deepEqual(createHollowRectangle(2,2),'**\n**');
 assert.deepEqual(createHollowRectangle(3,3),'***\n* *\n***');
 assert.deepEqual(createHollowRectangle(4,3),'****\n*  *\n****');
 
-assert.deepEqual(createFilledDiamond(2),'*');
-assert.deepEqual(createFilledDiamond(4),' *\n***\n *');
-assert.deepEqual(createFilledDiamond(6),'  *\n ***\n*****\n ***\n  *');
-
-assert.deepEqual(createHollowDiamond(4),' *\n* *\n *');
-assert.deepEqual(createHollowDiamond(6),'  *\n * *\n*   *\n * *\n  *');
 
 
-assert.deepEqual(createAngledDiamond(4),'  *\n / \\\n*   *\n \\ /\n  *');
+assert.deepEqual(createFilledDiamond(5),'  *  \n *** \n*****\n *** \n  *  ');
+assert.deepEqual(createHollowDiamond(5),'  *  \n * * \n*   *\n * * \n  *  ');
+assert.deepEqual(createAngled(5),'  *  \n / \\ \n*   *\n \\ / \n  *  ');
